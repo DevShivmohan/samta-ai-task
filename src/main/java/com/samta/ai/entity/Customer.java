@@ -8,6 +8,7 @@ import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 
 @Data
 @Entity
@@ -27,7 +28,8 @@ public class Customer {
     @Email
     @NotBlank
     private String email;
-    @Pattern(regexp = "^(?=.*[A-Za-z])(?=.*d)(?=.*[@$!%*#?&])[A-Za-zd@$!%*#?&]{8,}$",message = "Password at least one upper case alphabet, one digit, one special character")
+    @Size(min = 8)
+    @Pattern(regexp = "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$",message = "Password at least one upper case alphabet, one digit, one special symbol")
     private String password;
 
 }
