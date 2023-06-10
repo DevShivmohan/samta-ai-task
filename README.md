@@ -3,7 +3,7 @@
 **Base URL** - `localhost:6060/e-commerce`
 
 **Authentication mechanism**
-
+- Admin default email `shiv@gmail.com` password `shiv`
 - Login **POST** - `http://localhost:6060/e-commerce/authentication/login` and in body you have to specify user type 1 for Admin and 2 for Customers then generate Access and Refresh token both
 - Access token has 6 hrs expiry time while refresh token has expiry time 7 days.
 - You can use access token with Bearer text.
