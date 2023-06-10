@@ -1,0 +1,24 @@
+server:
+  servlet:
+    context-path: /e-commerce
+  port: 6060
+spring:
+  application:
+    name: Samta-ecommerce
+  datasource:
+    name: e-commerce
+    url: jdbc:mysql://localhost:3306/ecommerce
+    username: root
+    password: root
+    driver:
+      class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    properties:
+      hibernate:
+        dialeact: org.hibernate.dialeact.MySQL8Dialeact
+    hibernate:
+      ddl-auto: update
+# swagger enabling
+  mvc:
+    pathmatch:
+      matching-strategy: ant-path-matcher
