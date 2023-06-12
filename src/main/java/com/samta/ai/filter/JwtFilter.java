@@ -4,6 +4,9 @@ import com.samta.ai.constants.ApiConstants;
 import com.samta.ai.handler.CustomException;
 import com.samta.ai.service.impl.CustomUserDetailService;
 import com.samta.ai.util.JwtUtil;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.SignatureException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -19,6 +22,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @Component
+@Slf4j
 public class JwtFilter extends OncePerRequestFilter {
 
     @Autowired
@@ -33,7 +37,11 @@ public class JwtFilter extends OncePerRequestFilter {
         String username=null,token=null;
         if(authorizationHeader!=null && authorizationHeader.startsWith("Bearer ")){
             token=authorizationHeader.substring(7);
-            username=jwtUtil.extractUsername(token);
+            try{
+                username=jwtUtil.extractUsername(token);
+            }catch (ExpiredJwtException | SignatureException exception){
+                log.warn("JWT Token has expired");
+            }
         }
         if(username!=null && SecurityContextHolder.getContext().getAuthentication()==null){
             UserDetails userDetails= null;

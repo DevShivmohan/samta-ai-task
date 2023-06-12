@@ -79,7 +79,7 @@ public class JwtUtil {
 
     private String createToken(Map<String, Object> claims, String subject,long time) {
         return Jwts.builder().setClaims(claims).setSubject(subject).setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10))
+                .setExpiration(new Date(System.currentTimeMillis() + time))
                 .signWith(SignatureAlgorithm.HS256, SECRET_KEY).compact();
     }
 
@@ -101,7 +101,7 @@ public class JwtUtil {
         String tokenType= (String) claims.get(ApiConstants.TOKEN_TYPE);
         if(!tokenType.equalsIgnoreCase(ApiConstants.REFRESH_TOKEN))
             return false;
-        var user = (int)claims.get(ApiConstants.TOKEN_TYPE) == 1 ? vendorRepository.findByEmail(email)
+        var user = ((String)claims.get(ApiConstants.USER_TYPE)).equalsIgnoreCase(ApiConstants.VENDOR) ? vendorRepository.findByEmail(email)
                 .orElseThrow(()->new CustomException(HttpStatus.NOT_FOUND.value(), "User does not exists")) :
                 customerRepository.findByEmail(email)
                         .orElseThrow(()->new CustomException(HttpStatus.NOT_FOUND.value(), "User does not exists"));
